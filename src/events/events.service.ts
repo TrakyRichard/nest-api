@@ -1,18 +1,21 @@
 import { Injectable, Req, Res } from '@nestjs/common';
 import { CreateEvent } from './dto/create-events-dto';
-import { UpdateEvent } from './dto/update-event-dto';
+import { MongoUpdateEvent, UpdateEvent } from './dto/update-event-dto';
 import {v4 as uuidv4} from 'uuid';
 import { PrismaService } from 'prisma/prisma.service';
 import { EventNotFoundException } from 'src/shared/exceptions/eventNotFoundException';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { PrismaError } from 'prisma/prismaError';
 import { Request, Response } from "express";
+import { InjectModel } from '@nestjs/mongoose';
+import { EventDocument, EventModel } from 'src/events/schema/event.schema';
+import { Model } from 'mongoose';
 
 
 @Injectable()
 export class EventsService {
 
-    constructor(private readonly prismaService: PrismaService) {}
+    constructor(private readonly prismaService: PrismaService, @InjectModel(EventModel.name) private eventModel: Model<EventDocument>) {}
 
     async findAllEvent(@Req() req: Request, @Res() res: Response) {
         await this.prismaService.event.findMany().then((docs) => {
@@ -36,6 +39,9 @@ export class EventsService {
         })})
     }
 
+    async findAllEventFromMongo(): Promise<EventModel[]> {
+        return this.eventModel.find();
+    }
     async findOneEvent(@Req() req: Request, @Res() res: Response, id: number) {
         await this.prismaService.event.findUnique({
             where: {
@@ -53,6 +59,10 @@ export class EventsService {
             error: error
         })});
         
+    }
+
+    async findOneEventFromMongobd(id: string) {
+        return await this.eventModel.findOne({_id: id});
     }
 
     async createEvent(@Req() req: Request, @Res() res: Response, eventCreated: CreateEvent)
@@ -73,6 +83,12 @@ export class EventsService {
             message: "Something fail",
             error: error
         })})
+    }
+
+    async createEventFromMongo(createdEventDto: CreateEvent): Promise<EventModel>
+    {
+        const createdEvent = new this.eventModel(createdEventDto);
+        return createdEvent.save();
     }
 
     async updateEvent(@Req() req: Request, @Res() res: Response, id: number, updateEvent: UpdateEvent) {
@@ -104,6 +120,11 @@ export class EventsService {
                 }
             )
         }
+    }
+
+    async updateEventFromMongo(updatedEvent: MongoUpdateEvent, id: string) {
+        console.log(id);
+        return await this.eventModel.updateOne({...updatedEvent, _id: id })
     }
 
     async deleteEvent(@Req() req: Request, @Res() res: Response, id: number) {
@@ -142,5 +163,9 @@ export class EventsService {
             }
         )
     }
+    }
+
+    async deleteFromMongodb(id: string) {
+        return await this.eventModel.deleteOne({_id: id})
     }
 }

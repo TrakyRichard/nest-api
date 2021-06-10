@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Req, Res, } fro
 import { EventsService } from './events.service';
 import { CreateEvent } from './dto/create-events-dto';
 import { ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { UpdateEvent } from './dto/update-event-dto';
+import { MongoUpdateEvent, UpdateEvent } from './dto/update-event-dto';
 import { FindOneParams } from 'src/shared/utils/findOneParams';
 import { Request, Response } from "express";
 
@@ -19,9 +19,15 @@ export class EventsController {
       @ApiInternalServerErrorResponse({
         description: 'Internal server error',
       })
-    @Get("/v1")
+    @Get("/prisma/v1")
     findAllEvent(@Req() req: Request, @Res() res: Response){
         return this.eventsService.findAllEvent(req, res);
+    }
+
+    @Get("/mongodb/v1")
+    findAllEventFromMongo()
+    {
+      return this.eventsService.findAllEventFromMongo();
     }
 
     @ApiOkResponse({
@@ -32,11 +38,17 @@ export class EventsController {
       @ApiInternalServerErrorResponse({
         description: 'Internal server error',
       })
-    @Get('/v1/:id')
+    @Get('/prisma/v1/:id')
     findOneEvent(@Param() { id }: FindOneParams, @Req() req: Request, @Res() res: Response,) {
       console.log(id);
       
         return this.eventsService.findOneEvent(req, res, Number(id));
+    }
+
+    @Get('/mongodb/v1/:id')
+    findOneEventFromMongobd(@Param('id') id)
+    {
+      return this.eventsService.findOneEventFromMongobd(id);
     }
 
     @ApiOkResponse({
@@ -46,9 +58,14 @@ export class EventsController {
       @ApiInternalServerErrorResponse({
         description: 'Internal server error',
       })
-    @Post('/v1')
+    @Post('/prisma/v1')
     createEvent(@Req() req: Request, @Res() res: Response, @Body() eventCreated: CreateEvent) {
         return this.eventsService.createEvent(req, res, eventCreated);
+    }
+
+    @Post('/mongodb/v1')
+    createEventFromMongo(@Body() eventCreated: CreateEvent) {
+      return this.eventsService.createEventFromMongo(eventCreated)
     }
 
     @ApiOkResponse({
@@ -59,10 +76,16 @@ export class EventsController {
       @ApiInternalServerErrorResponse({
         description: 'Internal server error',
       })
-    @Put('/v1/:id')
+    @Put('/prisma/v1/:id')
     updateEvent(@Req() req: Request, @Res() res: Response, @Body() updateEventDto: UpdateEvent, @Param() { id }: FindOneParams)
     {
         return this.eventsService.updateEvent(req, res, Number(id),updateEventDto);
+    }
+
+    @Put('mongodb/v1/:id')
+    updateEventFromMongodb(@Param('id') id, @Body() updatedEvent: MongoUpdateEvent)
+    {
+      return this.eventsService.updateEventFromMongo(updatedEvent ,id);
     }
 
     @ApiOkResponse({
@@ -73,8 +96,14 @@ export class EventsController {
         @ApiInternalServerErrorResponse({
         description: 'Internal server error please can u try again.',
     })
-    @Delete("/v1/:id")
+    @Delete("/prisma/v1/:id")
     deleteEvent(@Req() req: Request, @Res() res: Response, @Param() { id } : FindOneParams) {
         return this.eventsService.deleteEvent(req, res, Number(id));
+    }
+
+    @Delete('/mongodb/v1/:id')
+    deleteEventFromMongodb(@Param('id') id)
+    {
+      return this.eventsService.deleteFromMongodb(id);
     }
 }
