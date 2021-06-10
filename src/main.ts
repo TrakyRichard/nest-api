@@ -5,7 +5,7 @@ import 'dotenv/config';
 import { Logger } from '@nestjs/common';
 
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 5000;
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const APP_NAME = process.env.npm_package_name;
