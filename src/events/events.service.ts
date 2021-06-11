@@ -123,7 +123,6 @@ export class EventsService {
     }
 
     async updateEventFromMongo(updatedEvent: MongoUpdateEvent, id: string) {
-        console.log(id);
         return await this.eventModel.updateOne({...updatedEvent, _id: id })
     }
 
