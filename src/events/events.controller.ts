@@ -19,7 +19,7 @@ export class EventsController {
       @ApiInternalServerErrorResponse({
         description: 'Internal server error',
       })
-    @Get("/v1")
+    @Get("prisma/v1")
     findAllEvent(@Req() req: Request, @Res() res: Response){
         return this.eventsService.findAllEvent(req, res);
     }
@@ -32,7 +32,7 @@ export class EventsController {
       @ApiInternalServerErrorResponse({
         description: 'Internal server error',
       })
-    @Get('/v1/:id')
+    @Get('prisma/v1/:id')
     findOneEvent(@Param() { id }: FindOneParams, @Req() req: Request, @Res() res: Response,) {
       console.log(id);
       
@@ -46,7 +46,7 @@ export class EventsController {
       @ApiInternalServerErrorResponse({
         description: 'Internal server error',
       })
-    @Post('/v1')
+    @Post('prisma/v1')
     createEvent(@Req() req: Request, @Res() res: Response, @Body() eventCreated: CreateEvent) {
         return this.eventsService.createEvent(req, res, eventCreated);
     }
@@ -59,7 +59,7 @@ export class EventsController {
       @ApiInternalServerErrorResponse({
         description: 'Internal server error',
       })
-    @Put('/v1/:id')
+    @Put('prisma/v1/:id')
     updateEvent(@Req() req: Request, @Res() res: Response, @Body() updateEventDto: UpdateEvent, @Param() { id }: FindOneParams)
     {
         return this.eventsService.updateEvent(req, res, Number(id),updateEventDto);
@@ -73,7 +73,7 @@ export class EventsController {
         @ApiInternalServerErrorResponse({
         description: 'Internal server error please can u try again.',
     })
-    @Delete("/v1/:id")
+    @Delete("prisma/v1/:id")
     deleteEvent(@Req() req: Request, @Res() res: Response, @Param() { id } : FindOneParams) {
         return this.eventsService.deleteEvent(req, res, Number(id));
     }

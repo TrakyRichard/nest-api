@@ -25,7 +25,7 @@ export class EventsService {
                         doc: doc,
                         request: {
                             type: "GET/:id",
-                            url: `http://localhost:5000/events/v1/${doc.id}`
+                            url: `http://localhost:5000/events/prisma/v1/${doc.id}`
                         }
                     }
                 }) 
@@ -66,7 +66,7 @@ export class EventsService {
                 eventCreated: result,
                 request: {
                     type: "GET/:id",
-                    url: `http://localhost:5000/events/v1/${result.id}`
+                    url: `http://localhost:5000/events/prisma/v1/${result.id}`
                 }
             })
         }).catch (error => {res.status(500).json({
@@ -122,12 +122,11 @@ export class EventsService {
                where: {
                    id,
                },
-           }).then((result) => {
+           }).then((_) => {
         
             return res.status(200).json({
                 requestUrl: req.url,
                 message: "This event was removed successfully",
-                eventRemoved: result
             })
            })})
        } catch (error) {
