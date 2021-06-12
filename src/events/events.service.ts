@@ -23,7 +23,7 @@ export class EventsService {
                         doc: doc,
                         request: {
                             type: "GET/:id",
-                            url: `http://localhost:5000/events/v1/${doc.id}`
+                            url: `http://localhost:5000/events/mongodb/v1/${doc._id}`
                         }
                     }
                 }) 

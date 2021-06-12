@@ -19,7 +19,7 @@ export class EventsController {
         description: 'Internal server error',
       })
 
-    @Get("/mongodb/v1")
+    @Get("mongodb/v1")
     findAllEventFromMongo(@Req() req: Request, @Res() res: Response)
     {
       return this.eventsService.findAllEventFromMongo(req, res);
@@ -33,7 +33,7 @@ export class EventsController {
       @ApiInternalServerErrorResponse({
         description: 'Internal server error',
       })
-    @Get('/mongodb/v1/:id')
+    @Get('mongodb/v1/:id')
     findOneEventFromMongobd(@Req() req: Request, @Res() res: Response, @Param('id') id)
     {
       return this.eventsService.findOneEventFromMongobd(req, res, id);
@@ -47,7 +47,7 @@ export class EventsController {
         description: 'Internal server error',
       })
 
-    @Post('/mongodb/v1')
+    @Post('mongodb/v1')
     createEventFromMongo(@Req() req: Request, @Res() res: Response, @Body() eventCreated: CreateEvent) {
       return this.eventsService.createEventFromMongo(req, res, eventCreated)
     }
@@ -76,7 +76,7 @@ export class EventsController {
         description: 'Internal server error please can u try again.',
     })
 
-    @Delete('/mongodb/v1/:id')
+    @Delete('mongodb/v1/:id')
     deleteEventFromMongodb(@Req() req: Request, @Res() res: Response, @Param('id') id)
     {
       return this.eventsService.deleteFromMongodb(req,res,id);
