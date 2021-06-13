@@ -1,16 +1,17 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Req, Res, } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { CreateEvent } from './dto/create-events-dto';
-import { ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiHeader, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { UpdateEvent } from './dto/update-event-dto';
 import { FindOneParams } from 'src/shared/utils/findOneParams';
 import { Request, Response } from "express";
+
 
 @ApiTags('events')
 @Controller('events')
 export class EventsController {
     constructor(private readonly eventsService: EventsService) {}
-
+    
     @ApiOkResponse({
         description: 'Retrieved all the event that are in the Database',
         type: UpdateEvent
@@ -23,7 +24,10 @@ export class EventsController {
     findAllEvent(@Req() req: Request, @Res() res: Response){
         return this.eventsService.findAllEvent(req, res);
     }
-
+    @ApiParam({
+      name: "id",
+      description: "The id is the only params to make this Get by id request"
+    })
     @ApiOkResponse({
         description: 'Retrieved event by ID successfully',
         type: UpdateEvent
@@ -39,8 +43,7 @@ export class EventsController {
         return this.eventsService.findOneEvent(req, res, Number(id));
     }
 
-    @ApiOkResponse({
-        description: 'Event created successfully',
+    @ApiCreatedResponse({ description: 'The record has been successfully created.',
         type: CreateEvent
       })
       @ApiInternalServerErrorResponse({
@@ -51,6 +54,10 @@ export class EventsController {
         return this.eventsService.createEvent(req, res, eventCreated);
     }
 
+    @ApiParam({
+      name: "id",
+      description: "The id is the only params to make this update request"
+    })
     @ApiOkResponse({
         description: 'Event Updated successfully',
         type: UpdateEvent
@@ -65,6 +72,10 @@ export class EventsController {
         return this.eventsService.updateEvent(req, res, Number(id),updateEventDto);
     }
 
+    @ApiParam({
+      name: "id",
+      description: "The id is the only params to make this Delete request"
+    })
     @ApiOkResponse({
         description: 'Event deleted successfully',
         type: UpdateEvent

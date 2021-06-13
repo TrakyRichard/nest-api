@@ -2,30 +2,55 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsDate, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class UpdateEvent {
-    @ApiProperty()
-    id: number;
-    @ApiProperty()
+    @ApiProperty({
+        description: "this is the title of the event",
+        type: String,
+        default: "title"
+    })
     @IsString()
     @IsNotEmpty()
     title: string;
-    @ApiProperty()
+    @ApiProperty(
+        {
+        description: "this is the description of the event",
+        type: String,
+        default: "description"
+        }
+    )
     @IsString()
     @IsNotEmpty()
     desc: string;
-    @ApiProperty()
+    @ApiProperty({
+        description: "this is the date of creation of the event",
+        type: Date,
+        default: "2021-06-13T16:31:39.122Z"
+    })
     @IsDate()
     @IsNotEmpty()
     createdDate: Date;
-    @ApiProperty()
+    @ApiProperty({
+        description: "this is the date of start of the event",
+        type: Date,
+        default: "2021-06-13T16:31:39.122Z"
+    })
     @IsDate()
     @IsNotEmpty()
     startDate: Date;
-    @ApiProperty()
+    @ApiProperty({
+        description: "this is the date of end of the event",
+        type: Date,
+        default: "2021-06-13T16:31:39.122Z"
+    })
     @IsDate()
     @IsNotEmpty()
     endDate: Date;
-    @ApiProperty()
+    @ApiProperty({
+        description: "this is the date of creation of the event",
+        type: String,
+        default: "Niger"
+    })
     @IsString()
     @IsNotEmpty()
     place: string
+
 }

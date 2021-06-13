@@ -80,7 +80,7 @@ export class EventsService {
             await this.prismaService.event.update({
                 data: {
                     ...updateEvent,
-                    id: updateEvent.id,
+                    id: id,
                 },
                 where: {
                     id,
