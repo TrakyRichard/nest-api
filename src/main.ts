@@ -12,12 +12,12 @@ async function bootstrap() {
   const APP_VERSION = process.env.npm_package_version;
 
   const options = new DocumentBuilder()
-    .setTitle("Events API")
+    .setTitle(APP_NAME)
     .setDescription(`The ${APP_NAME} API description`)
     .setVersion(APP_VERSION)
     .build();
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('docs', app, document);
+  SwaggerModule.setup('events-api/docs/postgresql-prisma', app, document);
   
   await app.listen(port);
   Logger.log("Server running...http://localhost:"+port+" Bootstrap");
