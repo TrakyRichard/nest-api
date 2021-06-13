@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDate, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsDate, IsNotEmpty, IsString } from "class-validator";
 
-export class UpdateEvent {
+export class EventDTO {
     @ApiProperty({
         description: "this is the title of the event",
         type: String,
@@ -52,5 +52,4 @@ export class UpdateEvent {
     @IsString()
     @IsNotEmpty()
     place: string
-
 }

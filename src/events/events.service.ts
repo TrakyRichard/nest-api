@@ -1,6 +1,5 @@
 import { Injectable, Req, Res } from '@nestjs/common';
-import { CreateEvent } from './dto/create-events-dto';
-import { UpdateEvent } from './dto/update-event-dto';
+import { EventDTO } from './dto/events-dto';
 import {v4 as uuidv4} from 'uuid';
 import { PrismaService } from 'prisma/prisma.service';
 import { EventNotFoundException } from 'src/shared/exceptions/eventNotFoundException';
@@ -55,7 +54,7 @@ export class EventsService {
         
     }
 
-    async createEvent(@Req() req: Request, @Res() res: Response, eventCreated: CreateEvent)
+    async createEvent(@Req() req: Request, @Res() res: Response, eventCreated: EventDTO)
     {
         return this.prismaService.event.create({
             data: eventCreated,
@@ -75,7 +74,7 @@ export class EventsService {
         })})
     }
 
-    async updateEvent(@Req() req: Request, @Res() res: Response, id: number, updateEvent: UpdateEvent) {
+    async updateEvent(@Req() req: Request, @Res() res: Response, id: number, updateEvent: EventDTO) {
         try {
             await this.prismaService.event.update({
                 data: {
