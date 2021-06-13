@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Req, Res, } from '@nestjs/common';
 import { EventsService } from './events.service';
-import { ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { EventDTO } from './dto/Event';
 import { Request, Response } from "express";
 
@@ -24,6 +24,10 @@ export class EventsController {
       return this.eventsService.findAllEventFromMongo(req, res);
     }
 
+    @ApiParam({
+      name: "id",
+      description: "The id is the only params to make this Get by id request"
+    })
     @ApiOkResponse({
         description: 'Retrieved event by ID successfully',
         type: EventDTO
@@ -38,19 +42,21 @@ export class EventsController {
       return this.eventsService.findOneEventFromMongobd(req, res, id);
     }
 
-    @ApiOkResponse({
-        description: 'Event created successfully',
+    @ApiCreatedResponse({ description: 'The record has been successfully created.',
         type: EventDTO
       })
       @ApiInternalServerErrorResponse({
         description: 'Internal server error',
       })
-
     @Post('mongodb/v1')
     createEventFromMongo(@Req() req: Request, @Res() res: Response, @Body() eventCreated: EventDTO) {
       return this.eventsService.createEventFromMongo(req, res, eventCreated)
     }
 
+    @ApiParam({
+      name: "id",
+      description: "The id is the only params to make this update request"
+    })
     @ApiOkResponse({
         description: 'Event Updated successfully',
         type: EventDTO
@@ -66,6 +72,10 @@ export class EventsController {
       return this.eventsService.updateEventFromMongo(req, res, updatedEvent ,id);
     }
 
+    @ApiParam({
+      name: "id",
+      description: "The id is the only params to make this Delete request"
+    })
     @ApiOkResponse({
         description: 'Event deleted successfully',
         type: EventDTO
