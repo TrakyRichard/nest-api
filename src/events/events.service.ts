@@ -1,6 +1,5 @@
 import { Injectable, Req, Res } from '@nestjs/common';
-import { CreateEvent } from './dto/create-events-dto';
-import { MongoUpdateEvent, UpdateEvent } from './dto/update-event-dto';
+import { EventDTO } from './dto/Event';
 import { Request, Response } from "express";
 import { InjectModel } from '@nestjs/mongoose';
 import { EventDocument, EventModel } from 'src/events/schema/event.schema';
@@ -50,7 +49,7 @@ export class EventsService {
     })});;
     }
 
-    async createEventFromMongo(@Req() req: Request, @Res() res: Response, createdEventDto: CreateEvent)
+    async createEventFromMongo(@Req() req: Request, @Res() res: Response, createdEventDto: EventDTO)
     {
         const createdEvent = new this.eventModel(createdEventDto);
         return await createdEvent.save().then(result => {
@@ -69,8 +68,8 @@ export class EventsService {
         })});
     }
 
-    async updateEventFromMongo(@Req() req: Request, @Res() res: Response,updatedEvent: MongoUpdateEvent, id: string) {
-        return await this.eventModel.updateOne({...updatedEvent, _id: id }).exec().then((result) => {
+    async updateEventFromMongo(@Req() req: Request, @Res() res: Response,updatedEvent: EventDTO, id: string) {
+        return await this.eventModel.updateOne({...updatedEvent }).exec().then((result) => {
             return res.status(201).json({
                 requestUrl: req.url,
                 message: "This event was updated successfully",
@@ -80,7 +79,7 @@ export class EventsService {
             return res.status(500).json(
                 {
                     message: "Something fail",
-                    error: error
+                    error: error.message
                 }
         );
     })

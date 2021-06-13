@@ -1,8 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Req, Res, } from '@nestjs/common';
 import { EventsService } from './events.service';
-import { CreateEvent } from './dto/create-events-dto';
 import { ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { MongoUpdateEvent, UpdateEvent } from './dto/update-event-dto';
+import { EventDTO } from './dto/Event';
 import { Request, Response } from "express";
 
 @ApiTags('events')
@@ -12,7 +11,7 @@ export class EventsController {
 
     @ApiOkResponse({
         description: 'Retrieved all the event that are in the Database',
-        type: UpdateEvent
+        type: EventDTO
       })
       @ApiNotFoundResponse({ description: 'No Event found for ID' })
       @ApiInternalServerErrorResponse({
@@ -27,7 +26,7 @@ export class EventsController {
 
     @ApiOkResponse({
         description: 'Retrieved event by ID successfully',
-        type: UpdateEvent
+        type: EventDTO
       })
       @ApiNotFoundResponse({ description: 'No Event found for ID' })
       @ApiInternalServerErrorResponse({
@@ -41,20 +40,20 @@ export class EventsController {
 
     @ApiOkResponse({
         description: 'Event created successfully',
-        type: CreateEvent
+        type: EventDTO
       })
       @ApiInternalServerErrorResponse({
         description: 'Internal server error',
       })
 
     @Post('mongodb/v1')
-    createEventFromMongo(@Req() req: Request, @Res() res: Response, @Body() eventCreated: CreateEvent) {
+    createEventFromMongo(@Req() req: Request, @Res() res: Response, @Body() eventCreated: EventDTO) {
       return this.eventsService.createEventFromMongo(req, res, eventCreated)
     }
 
     @ApiOkResponse({
         description: 'Event Updated successfully',
-        type: UpdateEvent
+        type: EventDTO
       })
       @ApiNotFoundResponse({ description: 'No Event found for ID' })
       @ApiInternalServerErrorResponse({
@@ -62,14 +61,14 @@ export class EventsController {
       })
 
     @Put('mongodb/v1/:id')
-    updateEventFromMongodb(@Req() req: Request, @Res() res: Response, @Param('id') id, @Body() updatedEvent: MongoUpdateEvent)
+    updateEventFromMongodb(@Req() req: Request, @Res() res: Response, @Param('id') id, @Body() updatedEvent: EventDTO)
     {
       return this.eventsService.updateEventFromMongo(req, res, updatedEvent ,id);
     }
 
     @ApiOkResponse({
         description: 'Event deleted successfully',
-        type: UpdateEvent
+        type: EventDTO
     })
         @ApiNotFoundResponse({ description: 'No Event to delete match this ID' })
         @ApiInternalServerErrorResponse({
