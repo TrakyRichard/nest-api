@@ -17,7 +17,7 @@ async function bootstrap() {
     .setVersion(APP_VERSION)
     .build();
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('mongo/docs', app, document);
+  SwaggerModule.setup('events-api/docs/mongodb', app, document);
   
   await app.listen(port);
   Logger.log("Server running...http://localhost:"+port+" Bootstrap");
